@@ -3,170 +3,205 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+
+    <link href="https://fonts.googleapis.com/css?family=Bangers|Bevan|Bungee+Inline|Cabin+Sketch|Caveat|Fredoka+One|Gloria+Hallelujah|Gochi+Hand|Hanalei+Fill|Kdam+Thmor|Libre+Barcode+39+Text|Luckiest+Guy|Major+Mono+Display|Orbitron|Permanent+Marker|Press+Start+2P|Rokkitt|Satisfy|Secular+One|Shrikhand" rel="stylesheet">
     <script src="jquery.js" charset="utf-8"></script>
-
-    <style media="screen">
-      * {
-      transition: all 0.3s ease;
-      }
-
-      div {
-        position: absolute;
-      }
-
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
 
     <script type="text/javascript">
-      $(function() {
-        $("div").each(function(index) {
-          let width = Math.round(Math.random() * 1000)
-          let height = Math.round(Math.random() * 1000)
-          let x = Math.round(Math.random() * 1000)
-          let y = Math.round(Math.random() * 1000)
+      const typefaces = ["libre", "major", "hanalei", "kdam", "secular", "gloria", "permanent", "rokkitt", "satisfy", "caveat", "orbitron", "luckiest", "fredoka", "bangers", "gochi", "press", "bevan", "shrikhand", "bungee", "cabin"]
+      const words = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGrey", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "DarkOrange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkSlateGrey", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray", "DimGrey", "DodgerBlue", "FireBrick", "FloralWhite", "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "GoldenRod", "Gray", "Grey", "Green", "GreenYellow", "HoneyDew", "HotPink", "IndianRed", "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenRodYellow", "LightGray", "LightGrey", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", "LightSlateGrey", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquaMarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenRod", "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple", "RebeccaPurple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen"]
 
-          let r = Math.floor(Math.random() *255) + 1
-          let g = Math.floor(Math.random() *255) + 1
-          let b = Math.floor(Math.random() *255) + 1
-          let color = [r, g, b].join()
+      let changeRectangleTimeout = 600;
+      let changeTypefaceTimeout = 100;
 
-          $(this).css({
-          "top": y + "px",
-          "left": x + "px",
-          "width": width + "px",
-          "height": height +  "px",
-          "background-color": "rgb(" + color +")"
-          })
 
-          $(this).on("mouseenter", function() {
-            let width = Math.round(Math.random() * 1000)
-            let height = Math.round(Math.random() * 1000)
-            let x = Math.round(Math.random() * 1000)
-            let y = Math.round(Math.random() * 1000)
+      function generateDivs(quantity, target) {
+        const element = "<div></div>"
+        let elements = ""
+        let step
 
-            let r = Math.floor(Math.random() *255) + 1
-            let g = Math.floor(Math.random() *255) + 1
-            let b = Math.floor(Math.random() *255) + 1
-            let color = [r, g, b].join()
+        for (step = 0; step < quantity; step++) {
+          elements += element
+        }
 
-            $(this).css({
-            "top": y + "px",
-            "left": x + "px",
-            "width": width + "px",
-            "height": height +  "px",
-            "background-color": "rgb(" + color +")"
-            })
+        target.append(elements)
+      }
+
+      function getRandomArbitrary(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min
+      }
+
+      function generatePercent(limit) {
+        let number = Math.round(Math.random() * limit)
+        return number
+      }
+
+      function generateSize() {
+        return generatePercent(95)
+      }
+
+      function generateShift(size) {
+        let limit = 100 - size
+        return generatePercent(limit)
+      }
+
+      function generateColorChannel() {
+        return getRandomArbitrary(100, 256)
+      }
+
+      function generateColor() {
+        const r = generateColorChannel()
+        const g = generateColorChannel()
+        const b = generateColorChannel()
+        let colorArray = [r, g, b]
+        const random = Math.floor(Math.random() * colorArray.length)
+        colorArray[random] = 0
+        const colorCSS = "rgb(" + colorArray.join() + ")"
+
+        return colorCSS
+      }
+
+      function changeRectangleCSS(element) {
+        const width  = generateSize()
+        const height = generateSize()
+        const x = generateShift(width) + "%"
+        const y = generateShift(height) + "%"
+        const translate = [x, y].join()
+        const scale = Math.random() * (1.5 - 0.2) + 0.2
+        const rotate = 0 // Math.random() * (360 - 0) + 0
+        const skewX = 0 // Math.random() * (360 - 0) + 0
+        const skewY = 0 // Math.random() * (360 - 0) + 0
+        const blur = getRandomArbitrary(0, 100)
+
+        element.css({
+          // "top":              generateShift(height) + "%",
+          // "left":             generateShift(width) + "%",
+          "transform":        "translate(" + translate + ") translateZ(0) scale(" + scale + ")" + "rotate(" + rotate + "deg)" + "skewX(" + skewX + "deg)" + "skewY(" + skewY + "deg)",
+          "width":            width + "%",
+          "height":           height + "%",
+          "background-color": generateColor(),
+          "filter": "blur( " + blur + "px)"
+        })
+      }
+
+      function generateWordContainerCSS(element) {
+        const x = generatePercent(150) + "vw"
+        const y = generatePercent(150) + "vh"
+        const translate = [x, y].join()
+        const scale = Math.random() * (1.5 - 0.2) + 0.2
+        const fontSize = getRandomArbitrary(30, 130)
+
+        element.css({
+          "transform": "translate(" + translate + ") translateZ(0) scale(" + scale + ")",
+          "font-size": fontSize
+        })
+      }
+
+      function changeRectanglesCSS() {
+        $("#artwork div").each(function() {
+          changeRectangleCSS($(this))
+        })
+      }
+
+      function changeRectangleOnTime() {
+        setTimeout(function() {
+          changeRectanglesCSS()
+          changeRectangleOnTime()
+        }, changeRectangleTimeout)
+      }
+
+      // function generateWordOnTime() {
+      //   setTimeout(function() {
+      //     generateWord()
+      //     generateWordOnTime()
+      //   }, 600)
+      // }
+
+      function changeTypefaceOnTime() {
+        setTimeout(function() {
+          changeTypefacesAndColor()
+          changeTypefaceOnTime()
+        }, changeTypefaceTimeout)
+      }
+
+      function changeTypefacesAndColor() {
+        $("#words span").map(function() {
+          const typefaceClass = typefaces[Math.floor(Math.random() * typefaces.length)]
+          const color = generateColor()
+          $(this).removeClass().addClass(typefaceClass).css("color", color)
+        })
+      }
+
+      function splitWordToSpans(word) {
+        let spanElements = []
+
+        word.split("").map(function(character) {
+          const typefaceClass = typefaces[Math.floor(Math.random() * typefaces.length)]
+          spanElements.push("<span class='" + typefaceClass + "'>" + character + "</span>")
+        })
+
+        let spansHTML = spanElements.join("")
+
+        return spansHTML
+      }
+
+      // function generateWord() {
+      //   const word = words[Math.floor(Math.random() * typefaces.length)]
+      //   const spansHTML = splitWordToSpans(word)
+      //
+      //   $("#words").append("<div>" + spansHTML + "</div>")
+      //   generateWordContainerCSS($("#words div").last())
+      // }
+
+      function generateWords() {
+        $("#words div").map(function() {
+          const word = words[Math.floor(Math.random() * typefaces.length)]
+          const spansHTML = splitWordToSpans(word)
+          $(this).html(spansHTML)
+          generateWordContainerCSS($(this))
+        })
+      }
+
+      function changeArtworkSizeOnMouseMove() {
+        $(document).on("mousemove", function(e) {
+          $("#artwork").css({
+            width: e.pageX + "px",
+            height: e.pageY + "px"
           })
         })
+      }
+
+      function changeTypefaceOnMouseMove() {
+        $(document).on("mousemove", function(e) {
+          const typefaceClass = typefaces[Math.floor(Math.random() * typefaces.length)]
+          $("#text").removeClass().addClass(typefaceClass)
+        })
+      }
+
+      // DOM Ready or project launch
+      $(function() {
+        generateDivs(10, $("#artwork"))
+        generateDivs(60, $("#words"))
+        generateWords()
+        changeRectangleOnTime()
+        changeTypefaceOnTime()
+        changeArtworkSizeOnMouseMove()
+        // generateWordOnTime()
+        // changeTypefaceOnMouseMove()
+
+        $(window).on("resize", function(){
+          console.log("Yo!", $(window).width(), $(window).height());
+          changeRectangleTimeout = $(window).height();
+          changeTypefaceTimeout = $(window).height();
+        })
       })
+      // анонимные функции мы пишем внутри какой-то функции, чтобы она работала только локально, то есть внутри какой-то функции, но не весь скрипт
     </script>
   </head>
+
   <body>
-
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-
+    <section id="artwork"></section>
+    <section id="words"></section>
   </body>
 </html>
